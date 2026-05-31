@@ -13,18 +13,29 @@ Dado que el entorno de desarrollo disponible contaba con recursos limitados y co
 Estos cambios no alteran la logica del sistema RAG solo simplifican la infraestructura para correr en un entorno local con recursos limitados
 
 ### Tecnologia usada
-LLM: API de Deepseek
-Embeddings: HuggingFaceEmbedding BAAI/bge-small-en-v1.5
-Base de datos vetorial: Milvus Lite
-Framework RAG: LlamaIndex
+- LLM: API de Deepseek
+- Embeddings: HuggingFaceEmbedding BAAI/bge-small-en-v1.5
+- Base de datos vetorial: Milvus Lite
+- Framework RAG: LlamaIndex
 ### Requisitos
+```
 pip install llama-index-core
 pip install llama-index-llms-deepseek
 pip install llama-index-embeddings-huggingface
 pip install llama-index-vector-stores-milvus
 pip install sentence-transformers
 pip install milvus-lite
+```
 ### Como usarlo
-1. Configurar API key de DeepSeek en rag.py: MY_API_KEY = "tu_api_key_aqui"
-2. Correr python ingest.py
-3. Correr python rag.py
+1. Configurar API key de DeepSeek en rag.py:
+   ```
+   MY_API_KEY = "tu_api_key_aqui"
+   ``
+2. Ejecutar ingest
+   ```
+   python ingest.py
+   ``
+3. Ejecutar rag
+   ```
+   python rag.py
+   ```
