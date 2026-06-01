@@ -2,21 +2,33 @@ from llama_index.core import SimpleDirectoryReader
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
 from llama_index.vector_stores.milvus import MilvusVectorStore
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 
 # Cargar PDF
-documents = SimpleDirectoryReader(input_files = ["mi_documento.pdf"]).load_data()
+documents = SimpleDirectoryReader(
+    input_files=["mi_documento.pdf"]
+).load_data()
 
 # Chunking
 splitter = SentenceSplitter(chunk_size=512, chunk_overlap=64)
 
 # Modelo de embedding local
-embedding_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+embedding_model = OpenAIEmbedding(
+    model="text-embedding-3-small",
+    api_base="http://localhost:8000/v1",
+    api_key="fake-key"
+)
 
-# Milvus Lite: guardar archivo localmente
-vector_store = MilvusVectorStore(uri="./milvus.db", collection_name="mis_docs", dim=384)
+# Milvus
+vector_store = MilvusVectorStore(
+    uri="http://localhost:19530",
+    collection_name="mis_docs",
+    dim=1536
+)
 
 # Crear pipeline de ingestión
-pipeline = IngestionPipeline(trasnformations=[splitter, embedding_model], vector_store=vector_store)
-pipeline.run(documents=documents)
-print("Ingestión completada con exito! :)")
+pipeline = IngestionPipeline(
+    transformations=[splitter, embedding_model],
+    vector_store=vector_store
+)
+print("Ingestión completada con exito! :D")

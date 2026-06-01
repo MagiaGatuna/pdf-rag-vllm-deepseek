@@ -1,21 +1,33 @@
 from llama_index.core import VectorStoreIndex, Settings
 from llama_index.vector_stores.milvus import MilvusVectorStore
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.deepseek import DeepSeek
 
+
 # Modelo de embedding 
-Settings.embedding_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
-
+Settings.embed_model = OpenAIEmbedding(
+    model="text-embedding-3-small",
+    api_base="http://localhost:8000/v1",
+    api_key="fake-key"
+)
 # DeepSeek como LLM
-MI_API_KEY = ""
-Settings.llm = DeepSeek(model=deepseek-chats, api_key=MI_API_KEY)
+MI_API_KEY = "TU_API_KEY_AQUI"
+Settings.llm = DeepSeek(model="deepseek-chats", api_key=MI_API_KEY)
 
-# Conectar Milvus Lite
-vector_store = MilvusVectorStore(uri="./milvus.db", collection_name="mis_docs", dim=384)
+# Conectar Milvus
+vector_store = MilvusVectorStore(
+    uri="http://localhost:19530",
+    collection_name="mis_docs",
+    dim=1536
+)
 
-index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
+index = VectorStoreIndex.from_vector_store(
+    vector_store=vector_store
+)
 
-query_engine = index.as_query_engine(similarity_top_k=3)
+query_engine = index.as_query_engine(
+    similarity_top_k=3
+)
 
 # Loop interactivo
 print("\nBienvenido! Sistema RAG Activo! Haz tus preguntas sobre el documento.\n")
